@@ -1,7 +1,7 @@
 package metrics
 
 import (
-	"github.com/micro-community/api-gateway/plugin/util/request"
+	"github.com/micro-in-cn/x-gateway/pkg/plugin/wrapper/util/request"
 )
 
 type Options struct {

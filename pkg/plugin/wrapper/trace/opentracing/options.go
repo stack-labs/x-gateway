@@ -2,8 +2,9 @@ package opentracing
 
 import (
 	"github.com/opentracing/opentracing-go"
-	"github.com/micro-community/api-gateway/plugin/util/request"
-	"github.com/micro-community/api-gateway/plugin/util/response"
+
+	"github.com/micro-in-cn/x-gateway/pkg/plugin/wrapper/util/request"
+	"github.com/micro-in-cn/x-gateway/pkg/plugin/wrapper/util/response"
 )
 
 type Options struct {
