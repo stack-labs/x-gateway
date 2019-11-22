@@ -1,6 +1,6 @@
 # API-Gateway
 
-基于Micro API的高性能网关，增加自定义micro工具，如`Auth`、`CORS`等.
+基于Go-micro的高性能网关，增加自定义micro工具，如`Auth`、`CORS`等.
 
 ## API-Gateway的应用场景
 
@@ -48,5 +48,5 @@ $ make run_web registry=etcd transport=tcp      # 指定etcd + tcp
 
 ```bash
 # tag自定义
-$ make docker tag=docker.pkg.github.com/micro-community/api-gateway/api-gateway:v1.15.0
+$ make docker tag=docker.pkg.github.com/micro-in-cn/api-gateway/api-gateway:v1.15.0
 ```
