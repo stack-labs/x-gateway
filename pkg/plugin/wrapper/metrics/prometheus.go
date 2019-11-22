@@ -8,8 +8,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
-	"github.com/micro-community/api-gateway/plugin/util/request"
-	"github.com/micro-community/api-gateway/plugin/util/response"
+	"github.com/micro-in-cn/x-gateway/pkg/plugin/wrapper/utilper/util/request"
+	"github.com/micro-in-cn/x-gateway/pkg/plugin/wrapper/utilper/util/response"
 )
 
 var (

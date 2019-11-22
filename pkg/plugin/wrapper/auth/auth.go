@@ -16,7 +16,7 @@ import (
 	"github.com/micro/micro/plugin"
 )
 
-const id = "hb-go.micro-plugins.micro.auth"
+const id = "micro.x-gateway.auth"
 
 var adapters map[string]persist.Adapter
 var watchers map[string]persist.Watcher
