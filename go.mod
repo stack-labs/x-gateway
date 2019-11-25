@@ -9,7 +9,7 @@ require (
 	github.com/codahale/hdrhistogram v0.0.0-20161010025455-3a0bb77429bd // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/micro/cli v0.2.0
-	github.com/micro/go-micro v1.16.1-0.20191121173113-8dc3fb964eaa
+	github.com/micro/go-micro v1.16.1-0.20191123082556-cae4148594da
 	github.com/micro/go-plugins v1.5.1
 	github.com/micro/micro v1.16.1-0.20191121175420-186c72c1941d
 	github.com/opentracing/opentracing-go v1.1.0
