@@ -17,10 +17,10 @@
 
 ## 功能设计
 
-+ 认证&鉴权`JWT`+`Casbin` [Auth](/pkg/plugin/wrapper/auth)
-+ 跨域支持 [CORS](/pkg/plugin/wrapper/cors)
-+ Metrics [Prometheus](/pkg/plugin/wrapper/metrics)
-+ Trace [Opentracing](/pkg/plugin/wrapper/trace/opentracing)
++ 认证&鉴权`JWT`+`Casbin` [Auth](/pkg/plugin/micro/auth)
++ 跨域支持 [CORS](/pkg/plugin/micro/cors)
++ Metrics [Prometheus](/pkg/plugin/micro/metrics)
++ Trace [Opentracing](/pkg/plugin/micro/trace/opentracing)
 + REST to GRPC 转换REST调用到GRPC(HTTP[s] -> API-Gateway -> Micro Srv)[计划中...]
 + 提供服务发现
 + 动态路由公共
