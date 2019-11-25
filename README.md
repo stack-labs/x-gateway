@@ -2,11 +2,7 @@
 
 基于Go-micro的高性能网关，增加自定义micro工具，如`Auth`、`CORS`等.
 
-[API​​网关](http://microservices.io/patterns/apigateway.html)为服务提供一个统一的公共入口点。
-
-[micro api](https://micro.mu/docs/api.html)是micro中基于go-micro的API网关。
-
-当前仓库的计划，是基于Micro精简到剩下Micro-API，再与x-gateway合并新的X-Gateway。
+[API​​网关](http://microservices.io/patterns/apigateway.html)为服务提供一个统一的公共流量入口。
 
 ![MICRO-API](docs/micro-api.png)
 
