@@ -1,0 +1,22 @@
+{
+    "go.useLanguageServer": true,
+    // "go.alternateTools": {
+    //     "gopls": "bingo"
+    //   },
+    "go.languageServerExperimentalFeatures": {
+        "format": true,
+        "autoComplete": true,
+        "rename": true,
+        "goToDefinition": true,
+        "hover": true,
+        "signatureHelp": true,
+        "goToTypeDefinition": true,
+        "goToImplementation": true,
+        "documentSymbols": true,
+        "workspaceSymbols": true,
+        "findReferences": true,
+        "diagnostics": true,
+        "documentLink": true
+      },
+      "go.languageServerFlags": ["-rpc.trace","-logfile", "${workspaceRoot}/tracelog.log"],
+}
