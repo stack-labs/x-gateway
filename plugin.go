@@ -14,12 +14,11 @@ import (
 	_ "github.com/micro/go-plugins/registry/kubernetes"
 	_ "github.com/micro/go-plugins/transport/tcp"
 
-	"github.com/casbin/casbin/v2/persist/file-adapter"
+	fileadapter "github.com/casbin/casbin/v2/persist/file-adapter"
 	"github.com/micro/go-micro/util/log"
 
 	tracer "github.com/micro-in-cn/x-gateway/pkg/opentracing"
 	"github.com/micro-in-cn/x-gateway/pkg/plugin/micro/auth"
-	"github.com/micro-in-cn/x-gateway/pkg/plugin/micro/cors"
 	"github.com/micro-in-cn/x-gateway/pkg/plugin/micro/metrics"
 	"github.com/micro-in-cn/x-gateway/pkg/plugin/micro/trace/opentracing"
 	"github.com/micro-in-cn/x-gateway/pkg/plugin/micro/util/response"
@@ -37,8 +36,6 @@ func pluginAfterFunc() error {
 
 // 插件注册
 func init() {
-	// 跨域
-	initCors()
 
 	// 监控
 	initMetrics()
@@ -48,18 +45,6 @@ func init() {
 
 	// 链路追踪
 	initTrace()
-}
-
-func initCors() {
-	// 跨域
-	corsPlugin := cors.NewPlugin(
-		cors.WithAllowMethods(http.MethodHead, http.MethodGet, http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete),
-		cors.WithAllowCredentials(true),
-		cors.WithMaxAge(3600),
-		cors.WithUseRsPkg(true),
-	)
-	api.Register(corsPlugin)
-	web.Register(corsPlugin)
 }
 
 func initAuth() {
