@@ -9,13 +9,12 @@ require (
 	github.com/codahale/hdrhistogram v0.0.0-20161010025455-3a0bb77429bd // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/micro/cli v0.2.0
-	github.com/micro/go-micro v1.16.1-0.20191123082556-cae4148594da
+	github.com/micro/go-micro v1.18.0
 	github.com/micro/go-plugins v1.5.1
-	github.com/micro/micro v1.16.1-0.20191121175420-186c72c1941d
+	github.com/micro/micro v1.18.0
 	github.com/opentracing/opentracing-go v1.1.0
 	github.com/prometheus/client_golang v1.2.1
 	github.com/rs/cors v1.7.0
-	github.com/stretchr/testify v1.4.0
 	github.com/uber/jaeger-client-go v2.20.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible
 	golang.org/x/time v0.0.0-20191024005414-555d28b269f0

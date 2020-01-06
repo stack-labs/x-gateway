@@ -6,6 +6,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/casbin/casbin/v2/persist/file-adapter"
+	"github.com/micro/go-micro/util/log"
 	"github.com/micro/micro/api"
 	"github.com/micro/micro/web"
 	"golang.org/x/time/rate"
@@ -13,9 +15,6 @@ import (
 	// micro plugins
 	_ "github.com/micro/go-plugins/registry/kubernetes"
 	_ "github.com/micro/go-plugins/transport/tcp"
-
-	fileadapter "github.com/casbin/casbin/v2/persist/file-adapter"
-	"github.com/micro/go-micro/util/log"
 
 	tracer "github.com/micro-in-cn/x-gateway/pkg/opentracing"
 	"github.com/micro-in-cn/x-gateway/pkg/plugin/micro/auth"
