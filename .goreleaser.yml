@@ -1,18 +1,18 @@
 project_name: x-gateway
 release:
   github:
-    owner: micro-china
-    name: micro-china
+    owner: micro-in-cn
+    name: x-gateway
   name_template: 'Release {{.Tag}}'
 before:
   hooks:
     - go mod download
 builds:
-- binary: micro
+- binary: x-gateway
   env:
     - CGO_ENABLED=0
     - GO111MODULE=on
-  ldflags: -w -X github.com/micro-community/micro-api/cmd.GitCommit={{ .ShortCommit }} -X github.com/micro-community/micro-api/cmd.GitTag={{ .Tag }} -X github.com/micro-community/micro-api/cmd.BuildDate={{ .Timestamp }}
+  ldflags: -w -X github.com/micro-in-cn/x-gateway/cmd.GitCommit={{ .ShortCommit }} -X github.com/micro-in-cn/x-gateway/cmd.GitTag={{ .Tag }} -X github.com/micro-in-cn/x-gateway/cmd.BuildDate={{ .Timestamp }}
   goos:
   - linux
   - darwin
