@@ -1,8 +1,8 @@
 package auth
 
 import (
-	"github.com/micro-in-cn/x-gateway/internal/helper/request"
-	"github.com/micro-in-cn/x-gateway/internal/helper/response"
+	"github.com/micro-in-cn/x-gateway/utils/request"
+	"github.com/micro-in-cn/x-gateway/utils/response"
 )
 
 //Options of auth

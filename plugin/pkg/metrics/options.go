@@ -1,7 +1,7 @@
 package metrics
 
 import (
-	"github.com/micro-in-cn/x-gateway/internal/helper/request"
+	"github.com/micro-in-cn/x-gateway/utils/request"
 )
 
 //Options of metric

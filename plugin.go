@@ -11,7 +11,7 @@ import (
 	"github.com/micro-in-cn/x-gateway/plugin/pkg/auth"
 	"github.com/micro-in-cn/x-gateway/plugin/pkg/metrics"
 	"github.com/micro-in-cn/x-gateway/plugin/pkg/opentracing"
-	"github.com/micro-in-cn/x-gateway/internal/helper/response"
+	"github.com/micro-in-cn/x-gateway/utils/response"
 	tracer "github.com/micro-in-cn/x-gateway/plugin/pkg/trace"
 	"golang.org/x/time/rate"
 )
