@@ -1,0 +1,52 @@
+project_name: x-gateway
+release:
+  github:
+    owner: micro-china
+    name: micro-china
+  name_template: 'Release {{.Tag}}'
+before:
+  hooks:
+    - go mod download
+builds:
+- binary: micro
+  env:
+    - CGO_ENABLED=0
+    - GO111MODULE=on
+  ldflags: -w -X github.com/micro-community/micro-api/cmd.GitCommit={{ .ShortCommit }} -X github.com/micro-community/micro-api/cmd.GitTag={{ .Tag }} -X github.com/micro-community/micro-api/cmd.BuildDate={{ .Timestamp }}
+  goos:
+  - linux
+  - darwin
+  - windows
+  goarch:
+  - amd64
+  - arm
+  - arm64
+  goarm:
+  - 7
+archives:
+- name_template: '{{.ProjectName}}-{{.Tag}}-{{.Os}}-{{.Arch}}{{if .Arm}}{{.Arm}}{{end}}'
+  replacements:
+    darwin: darwin
+    linux: linux
+    windows: windows
+    amd64: amd64
+    arm: arm
+    arm64: arm64
+  format: tar.gz
+  format_overrides:
+  - goos: windows
+    format: zip
+  files:
+    - LICENSE
+    - README.md
+checksum:
+  name_template: 'checksums.txt'
+  algorithm: sha256
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'

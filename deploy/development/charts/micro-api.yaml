@@ -14,8 +14,12 @@ spec:
       containers:
       - name: api
         image: hbchen/micro:v1.14.0_starter_kit
+        resources:
+          limits:
+            cpu: "25m"
+            memory: "128m"
         command: [
-          "/micro",
+          "/x-gateway",
           "--registry=kubernetes",
           "--server=rpc",
           "--broker=http",
