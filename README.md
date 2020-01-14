@@ -24,7 +24,7 @@
 + REST to GRPC 转换REST调用到GRPC(HTTP[s] -> API-Gateway -> Micro Srv)[计划中...]
 + 提供服务发现
 + 动态路由公共
-- 高性能
++ 高性能
 - 智能路由
 - 流量控制管理
 - 日志定制
