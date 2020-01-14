@@ -97,6 +97,9 @@ func (a *Auth) handler(h http.Handler) http.Handler {
 			return
 		}
 
+		// 将用户ID加入Header
+		r.Header.Set("UserId", claims.Id)
+
 		// otherwise serve everything
 		h.ServeHTTP(w, r)
 	})
