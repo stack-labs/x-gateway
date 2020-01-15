@@ -1,4 +1,4 @@
-# API-Gateway
+x-gateway
 
 基于Go-micro的高性能网关，增加自定义micro工具，如`Auth`、`CORS`等.
 
@@ -41,6 +41,9 @@
 ```bash
 # 编译
 $ make build
+
+# 直接运行
+$ ./x-gateway                                   # 效果等于 运行`micro api` 
 
 # API
 $ make run_api                                  # 默认mdns + http
