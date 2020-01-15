@@ -35,7 +35,7 @@ import (
 	"github.com/micro-in-cn/x-gateway/internal/handler"
 	"github.com/micro-in-cn/x-gateway/internal/helper"
 	"github.com/micro-in-cn/x-gateway/internal/stats"
-	"github.com/micro-in-cn/x-gateway/plugin"
+	"github.com/micro/micro/plugin"
 )
 
 //basic vars

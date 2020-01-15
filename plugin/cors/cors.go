@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/micro-in-cn/x-gateway/plugin"
+	"github.com/micro/micro/plugin"
 	"github.com/rs/cors"
 )
 

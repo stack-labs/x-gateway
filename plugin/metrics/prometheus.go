@@ -3,7 +3,7 @@ package metrics
 import (
 	"net/http"
 	"strconv"
-	"github.com/micro-in-cn/x-gateway/plugin"
+	"github.com/micro/micro/plugin"
 	"github.com/micro-in-cn/x-gateway/utils/request"
 	"github.com/micro-in-cn/x-gateway/utils/response"
 	"github.com/prometheus/client_golang/prometheus"

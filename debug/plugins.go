@@ -3,7 +3,7 @@ package debug
 import (
 	"fmt"
 
-	"github.com/micro-in-cn/x-gateway/plugin"
+	"github.com/micro/micro/plugin"
 )
 
 var (

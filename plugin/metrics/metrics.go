@@ -1,7 +1,7 @@
 package metrics
 
 import (
-	"github.com/micro-in-cn/x-gateway/plugin"
+	"github.com/micro/micro/plugin"
 )
 
 //NewPlugin of metrics

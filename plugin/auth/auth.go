@@ -13,7 +13,7 @@ import (
 	"github.com/micro/cli"
 	"github.com/micro/go-micro/errors"
 	"github.com/micro/go-micro/util/log"
-	"github.com/micro-in-cn/x-gateway/plugin"
+	"github.com/micro/micro/plugin"
 )
 
 const id = "micro.x-gateway.auth"
