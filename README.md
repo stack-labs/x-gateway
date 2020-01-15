@@ -58,5 +58,5 @@ $ make run_web registry=etcd transport=tcp      # 指定etcd + tcp
 
 ```bash
 # tag自定义
-$ make docker tag=docker.pkg.github.com/micro-in-cn/api-gateway/api-gateway:v1.15.0
+$ make docker tag=docker.pkg.github.com/micro-in-cn/x-gateway/x-gateway:v1.15.0
 ```
