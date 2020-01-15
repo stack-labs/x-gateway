@@ -13,6 +13,15 @@ all: build
 vendor:
 	go mod vendor
 
+vet:
+	go vet ./...
+
+test: vet
+	go test -v ./...
+
+clean:
+	rm -rf ./x-gateway
+
 build:
 	go build -a -installsuffix cgo -ldflags "-w ${LDFLAGS}" -o $(NAME) ./*.go
 
@@ -24,15 +33,6 @@ docker:
 	docker tag $(IMAGE_NAME):$(IMAGE_TAG) $(IMAGE_NAME):latest
 	docker push $(IMAGE_NAME):$(IMAGE_TAG)
 	docker push $(IMAGE_NAME):latest
-
-vet:
-	go vet ./...
-
-test: vet
-	go test -v ./...
-
-clean:
-	rm -rf ./x-gateway
 
 run_api:
 	x-gateway --registry=$(registry) --transport=$(transport) api
