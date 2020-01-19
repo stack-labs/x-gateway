@@ -2,7 +2,7 @@
 
 micro定制插件
 
-- [auth](/pkg/plugin/micro/auth)
+- [auth](/plugin/auth)
 - [cors](/pkg/plugin/micro/cors)
 - [metrics](/pkg/plugin/micro/metrics)
 - [trace](/pkg/plugin/micro/trace)
