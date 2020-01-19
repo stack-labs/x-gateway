@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: micro-proxy
+  labels:
+    micro: runtime
+    name: micro-proxy
+  annotations:
+    name: "go.micro.proxy"
+    version: "latest"
+    source: "github.com/micro-in-cn/x-gateway"
+    owner: "micro"
+    group: "micro"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: micro-proxy
+      micro: runtime
+  template:
+    metadata:
+      labels:
+        name: micro-proxy
+        micro: runtime
+    spec:
+      containers:
+      - name: proxy
+        env:
+        - name: MICRO_BROKER
+          value: "nats"
+        - name: MICRO_BROKER_ADDRESS
+          value: "nats-cluster"
+        - name: MICRO_ROUTER
+          value: "go.micro.router"
+        - name: MICRO_REGISTRY
+          value: "etcd"
+        - name: MICRO_REGISTRY_ADDRESS
+          value: "etcd-cluster-client"
+        - name: MICRO_ENABLE_ACME
+          value: "true"
+        args:
+        - proxy
+        image: micro/micro
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8081
+          name: proxy-port

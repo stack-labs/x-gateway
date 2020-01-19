@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: micro-proxy
+  namespace: default
+  labels:
+    name: micro-proxy
+    micro: runtime
+spec:
+  ports:
+  - port: 8081
+    protocol: TCP
+  selector:
+    name: micro-proxy
+    micro: runtime
