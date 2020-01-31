@@ -10,10 +10,10 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/dgrijalva/jwt-go/request"
 	"github.com/dgrijalva/jwt-go/test"
-	"github.com/micro/cli"
-	"github.com/micro/go-micro/errors"
-	"github.com/micro/go-micro/util/log"
-	"github.com/micro/micro/plugin"
+	"github.com/micro/cli/v2"
+	"github.com/micro/go-micro/v2/errors"
+	"github.com/micro/go-micro/v2/util/log"
+	"github.com/micro/micro/v2/plugin"
 )
 
 const id = "micro.x-gateway.auth"
