@@ -17,6 +17,7 @@ spec:
         resources:
           limits:
             cpu: "25m"
+            memory: "128m"
         command: [
           "/micro",
           "--registry=kubernetes",

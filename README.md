@@ -1,4 +1,4 @@
-# API-Gateway
+# x-gateway
 
 基于Go-micro的高性能网关，增加自定义micro工具，如`Auth`、`CORS`等.
 
@@ -24,7 +24,7 @@
 + REST to GRPC 转换REST调用到GRPC(HTTP[s] -> API-Gateway -> Micro Srv)[计划中...]
 + 提供服务发现
 + 动态路由公共
-- 高性能
++ 高性能
 - 智能路由
 - 流量控制管理
 - 日志定制
@@ -42,6 +42,9 @@
 # 编译
 $ make build
 
+# 直接运行
+$ ./x-gateway                                   # 效果等于 运行`micro api` 
+
 # API
 $ make run_api                                  # 默认mdns + http
 $ make run_api registry=etcd transport=tcp      # 指定etcd + tcp
@@ -55,5 +58,5 @@ $ make run_web registry=etcd transport=tcp      # 指定etcd + tcp
 
 ```bash
 # tag自定义
-$ make docker tag=docker.pkg.github.com/micro-in-cn/api-gateway/api-gateway:v1.15.0
+$ make docker tag=docker.pkg.github.com/micro-in-cn/x-gateway/x-gateway:v1.15.0
 ```

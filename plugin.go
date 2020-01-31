@@ -3,31 +3,25 @@ package main
 import (
 	"io"
 	"net/http"
-	"strings"
 	"time"
 
-	"github.com/casbin/casbin/v2/persist/file-adapter"
+	fileadapter "github.com/casbin/casbin/v2/persist/file-adapter"
 	"github.com/micro/go-micro/util/log"
-	"github.com/micro/micro/api"
-	"github.com/micro/micro/web"
+	"github.com/micro-in-cn/x-gateway/api"
+	"github.com/micro-in-cn/x-gateway/plugin/auth"
+	"github.com/micro-in-cn/x-gateway/plugin/metrics"
+	"github.com/micro-in-cn/x-gateway/plugin/opentracing"
+	"github.com/micro-in-cn/x-gateway/utils/response"
+	tracer "github.com/micro-in-cn/x-gateway/plugin/trace"
 	"golang.org/x/time/rate"
-
-	// micro plugins
-	_ "github.com/micro/go-plugins/registry/kubernetes"
-	_ "github.com/micro/go-plugins/transport/tcp"
-
-	tracer "github.com/micro-in-cn/x-gateway/pkg/opentracing"
-	"github.com/micro-in-cn/x-gateway/pkg/plugin/micro/auth"
-	"github.com/micro-in-cn/x-gateway/pkg/plugin/micro/metrics"
-	"github.com/micro-in-cn/x-gateway/pkg/plugin/micro/trace/opentracing"
-	"github.com/micro-in-cn/x-gateway/pkg/plugin/micro/util/response"
 )
 
-var apiTracerCloser, webTracerCloser io.Closer
+var (
+	apiTracerCloser io.Closer
+)
 
-func pluginAfterFunc() error {
+func cleanWork() error {
 	// closer
-	webTracerCloser.Close()
 	apiTracerCloser.Close()
 
 	return nil
@@ -35,30 +29,16 @@ func pluginAfterFunc() error {
 
 // 插件注册
 func init() {
-
-	// 监控
-	initMetrics()
-
 	// Auth
 	initAuth()
-
-	// 链路追踪
+	initMetrics()
 	initTrace()
 }
 
 func initAuth() {
-	// adapter
-	// xorm
-	// a, _ := xormadapter.NewAdapter("mysql", "mysql_username:mysql_password@tcp(127.0.0.1:3306)/")
-	// file
-	a := fileadapter.NewAdapter("./conf/casbin_policy.csv")
-	auth.RegisterAdapter("default", a)
 
-	// watcher
-	// https://casbin.org/docs/zh-CN/watchers
-	// w := etcdwatcher.NewWatcher("http://127.0.0.1:2379")
-	// w, _ := rediswatcher.NewWatcher("127.0.0.1:6379")
-	// auth.RegisterWatcher("default", w)
+	casb := fileadapter.NewAdapter("./conf/casbin_policy.csv")
+	auth.RegisterAdapter("default", casb)
 
 	authPlugin := auth.NewPlugin(
 		auth.WithResponseHandler(response.DefaultResponseHandler),
@@ -68,50 +48,25 @@ func initAuth() {
 	)
 	api.Register(authPlugin)
 
-	webAuthPlugin := auth.NewPlugin(
-		auth.WithResponseHandler(response.DefaultResponseHandler),
-		auth.WithSkipperFunc(func(r *http.Request) bool {
-			// 自定义skipper规则
-			return true
-		}),
-	)
-	web.Register(webAuthPlugin)
 }
 
+//(b >= 'a' && b <= 'z') || (b >= 'A' && b <= 'Z') || b == '_' || b == ':' || (b >= '0' && b <= '9' && i > 0)
 func initMetrics() {
 	api.Register(metrics.NewPlugin(
-		metrics.WithNamespace("gateway"),
+		metrics.WithNamespace("xgateway"), //only [a-zA-Z0-9:_]
 		metrics.WithSubsystem(""),
 		metrics.WithSkipperFunc(func(r *http.Request) bool {
 			return false
-		}),
-	))
-
-	web.Register(metrics.NewPlugin(
-		metrics.WithNamespace("gateway"),
-		metrics.WithSubsystem(""),
-		metrics.WithSkipperFunc(func(r *http.Request) bool {
-			// 过滤micro web服务的前缀，便于设置统一规则，如/console/v1/* => /v1/*
-			path := r.URL.Path
-			idx := strings.Index(path[1:], "/")
-			if idx > 0 {
-				path = path[idx+1:]
-			}
-			if strings.HasPrefix(path, "/v1/") {
-				return false
-			}
-			return true
 		}),
 	))
 }
 
 // Tracing仅由Gateway控制，在下游服务中仅在有Tracing时启动
 func initTrace() {
-	apiTracer, apiCloser, err := tracer.NewJaegerTracer("go.micro.api", "127.0.0.1:6831")
+	apiTracer, apiCloser, err := tracer.NewJaegerTracer("go.micro.x-gateway", "127.0.0.1:6831")
 	if err != nil {
 		log.Fatalf("opentracing tracer create error:%v", err)
 	}
-
 	limiter := rate.NewLimiter(rate.Every(time.Millisecond*100), 10)
 	apiTracerCloser = apiCloser
 	api.Register(opentracing.NewPlugin(
@@ -125,24 +80,4 @@ func initTrace() {
 		}),
 	))
 
-	webTracer, webCloser, err := tracer.NewJaegerTracer("go.micro.web", "127.0.0.1:6831")
-	if err != nil {
-		log.Fatalf("opentracing tracer create error:%v", err)
-	}
-	webTracerCloser = webCloser
-	web.Register(opentracing.NewPlugin(
-		opentracing.WithTracer(webTracer),
-		opentracing.WithSkipperFunc(func(r *http.Request) bool {
-			// Host、Path等过滤规则
-			path := r.URL.Path
-			idx := strings.Index(path[1:], "/")
-			if idx > 0 {
-				path = path[idx+1:]
-			}
-			if strings.HasPrefix(path, "/v1/") {
-				return false
-			}
-			return true
-		}),
-	))
 }

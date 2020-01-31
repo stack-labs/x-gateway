@@ -1,21 +1,38 @@
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
 *.so
-*.dylib
+*.log
+# Folders
+_obj
+_test
+_build
 
-# Test binary, build with `go test -c`
+# Architecture specific extensions/prefixes
+*.[568vq]
+[568vq].out
+
+*.cgo1.go
+*.cgo2.c
+_cgo_defun.c
+_cgo_gotypes.go
+_cgo_export.*
+
+_testmain.go
+
+*.exe
 *.test
+*.prof
 
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
+# ignore go build and test outputs
+coverage.txt
+coverage.out
 
-.DS_Store
-bin
-
-# Editor directories and files
-.idea
-
-# Golang Files
-go.sum
+# ignore locally built binaries
+micro
+!micro/
+dist
+*.orig
+/__debug_bin
+/x-gateway
+/x-gateway.exe

@@ -1,8 +1,19 @@
 {
-    "go.useLanguageServer": true,
-    // "go.alternateTools": {
-    //     "gopls": "bingo"
-    //   },
+    "editor.tabSize": 2,
+    "editor.codeLens": true,
+    "editor.snippetSuggestions": "top",
+    "extensions.ignoreRecommendations": false,
+    "go.lintOnSave": "workspace",
+    "go.vetOnSave": "workspace",
+    "go.buildTags": "",
+    "go.buildFlags": [],
+    "go.lintFlags": [],
+    "go.vetFlags": [],
+    "go.useCodeSnippetsOnFunctionSuggest": false,
+    "go.testFlags": [
+        "-v"
+    ],
+    "go.autocompleteUnimportedPackages": true,
     "go.languageServerExperimentalFeatures": {
         "format": true,
         "autoComplete": true,
@@ -18,5 +29,5 @@
         "diagnostics": true,
         "documentLink": true
       },
-      "go.languageServerFlags": ["-rpc.trace","-logfile", "${workspaceRoot}/tracelog.log"],
+      "go.languageServerFlags": ["-logfile", "debug.log"]
 }
