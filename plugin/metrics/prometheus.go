@@ -1,13 +1,13 @@
 package metrics
 
 import (
-	"net/http"
-	"strconv"
-	"github.com/micro/micro/plugin"
 	"github.com/micro-in-cn/x-gateway/utils/request"
 	"github.com/micro-in-cn/x-gateway/utils/response"
+	"github.com/micro/micro/v2/plugin"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"net/http"
+	"strconv"
 )
 
 //DefObjectives of prometheus
