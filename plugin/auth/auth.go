@@ -127,27 +127,27 @@ func NewPlugin(opts ...Option) plugin.Plugin {
 	return plugin.NewPlugin(
 		plugin.WithName("Auth"),
 		plugin.WithFlag(
-			cli.StringFlag{
+			&cli.StringFlag{
 				Name:  "auth_pub_key",
 				Usage: "Auth public key file",
 				Value: "./conf/auth_key.pub",
 			},
-			cli.StringFlag{
+			&cli.StringFlag{
 				Name:  "casbin_model",
 				Usage: "Casbin model config file",
 				Value: "./conf/casbin_model.conf",
 			},
-			cli.StringFlag{
+			&cli.StringFlag{
 				Name:  "casbin_adapter",
 				Usage: "Casbin registed adapter {" + strings.Join(egAdapter, ", ") + "}",
 				Value: "default",
 			},
-			cli.StringFlag{
+			&cli.StringFlag{
 				Name:  "casbin_watcher",
 				Usage: "Casbin registed watcher {" + strings.Join(egWatcher, ", ") + "}",
 				Value: "default",
 			},
-			cli.StringFlag{
+			&cli.StringFlag{
 				Name:  "casbin_public_user",
 				Usage: "Casbin public user",
 				Value: "public",
