@@ -3,7 +3,7 @@ package opentracing
 import (
 	"net/http"
 
-	"github.com/micro/micro/plugin"
+	"github.com/micro/micro/v2/plugin"
 	"github.com/opentracing/opentracing-go"
 
 	"github.com/micro-in-cn/x-gateway/utils/response"
