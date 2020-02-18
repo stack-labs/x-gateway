@@ -9,18 +9,11 @@ require (
 	github.com/go-acme/lego/v3 v3.3.0
 	github.com/golang/protobuf v1.3.2
 	github.com/gorilla/mux v1.7.3
-	github.com/grpc-ecosystem/grpc-gateway v1.9.2 // indirect
 	github.com/hako/branca v0.0.0-20180808000428-10b799466ada
-	github.com/mattn/go-isatty v0.0.8 // indirect
-	github.com/micro/cli v0.2.0
-	github.com/micro/cli/v2 v2.1.1
-	github.com/micro/go-micro v1.18.1-0.20200110215436-f50a50eeb36a
-	github.com/micro/go-micro/v2 v2.0.0
-	github.com/micro/micro v1.18.0
-	github.com/micro/micro/v2 v2.0.0
-	github.com/netdata/go-orchestrator v0.0.0-20190905093727-c793edba0e8f
-	github.com/onsi/ginkgo v1.8.0 // indirect
-	github.com/onsi/gomega v1.5.0 // indirect
+	github.com/micro/cli/v2 v2.1.2-0.20200203150404-894195727d9c
+	github.com/micro/go-micro/v2 v2.1.1-0.20200217092848-aa9a0a8d2332
+	github.com/micro/micro/v2 v2.0.0-20200217094223-bf173a600984
+	github.com/olekukonko/tablewriter v0.0.4
 	github.com/opentracing/opentracing-go v1.1.0
 	github.com/pborman/uuid v1.2.0
 	github.com/prometheus/client_golang v1.2.1
