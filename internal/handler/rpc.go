@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/micro/go-micro/client"
-	"github.com/micro/go-micro/config/cmd"
-	"github.com/micro/go-micro/errors"
+	"github.com/micro/go-micro/v2/client"
+	"github.com/micro/go-micro/v2/config/cmd"
+	"github.com/micro/go-micro/v2/errors"
 	"github.com/micro-in-cn/x-gateway/internal/helper"
 )
 

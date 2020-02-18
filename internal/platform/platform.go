@@ -6,13 +6,18 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/micro/cli"
-	"github.com/micro/go-micro/config/cmd"
-	gorun "github.com/micro/go-micro/runtime"
-	"github.com/micro/go-micro/util/log"
+	"github.com/micro/cli/v2"
+	"github.com/micro/go-micro/v2/config/cmd"
+	gorun "github.com/micro/go-micro/v2/runtime"
+	"github.com/micro/go-micro/v2/util/log"
 	// include usage
 	//"github.com/micro-in-cn/x-gateway/internal/update"
 	//_ "github.com/micro-in-cn/x-gateway/internal/usage"
+
+	// import specific plugins
+	k8sRuntime "github.com/micro/go-micro/v2/runtime/kubernetes"
+	cfStore "github.com/micro/go-micro/v2/store/cloudflare"
+	ckStore "github.com/micro/go-micro/v2/store/cockroach"
 )
 
 var (
@@ -31,6 +36,7 @@ var (
 		// runtime services
 		"debug", // :????
 		"api",   // :8080
+		"auth",     // :8010
 		"init",  // no port, manage self
 	}
 
@@ -47,13 +53,19 @@ var (
 	}
 )
 
-type initNotifier struct {
-	gorun.Notifier
+func init() {
+	cmd.DefaultRuntimes["kubernetes"] = k8sRuntime.NewRuntime
+	cmd.DefaultStores["cockroach"] = ckStore.NewStore
+	cmd.DefaultStores["cloudflare"] = cfStore.NewStore
+}
+
+type initScheduler struct {
+	gorun.Scheduler
 	services []string
 }
 
-func (i *initNotifier) Notify() (<-chan gorun.Event, error) {
-	ch, err := i.Notifier.Notify()
+func (i *initScheduler) Notify() (<-chan gorun.Event, error) {
+	ch, err := i.Scheduler.Notify()
 	if err != nil {
 		return nil, err
 	}
@@ -81,8 +93,8 @@ func (i *initNotifier) Notify() (<-chan gorun.Event, error) {
 	return evChan, nil
 }
 
-func initNotify(n gorun.Notifier, services []string) gorun.Notifier {
-	return &initNotifier{n, services}
+func initNotify(n gorun.Scheduler, services []string) gorun.Scheduler {
+	return &initScheduler{n, services}
 }
 
 // Init is the `micro init` command which manages the lifecycle
@@ -90,17 +102,17 @@ func initNotify(n gorun.Notifier, services []string) gorun.Notifier {
 func Init(context *cli.Context) {
 	log.Name("init")
 
-	if len(context.Args()) > 0 {
+	if context.Args().Len() > 0 {
 		cli.ShowSubcommandHelp(context)
 		os.Exit(1)
 	}
 
 	// create the combined list of services
-	initServices := append(services, dashboards...)
-	initServices = append(services, apis...)
+	initServices := append(dashboards, apis...)
+	initServices = append(initServices, services...)
 
 	// get the service prefix
-	if namespace := context.GlobalString("namespace"); len(namespace) > 0 {
+	if namespace := context.String("namespace"); len(namespace) > 0 {
 		for i, service := range initServices {
 			initServices[i] = fmt.Sprintf("%s.%s", namespace, service)
 		}
@@ -110,13 +122,13 @@ func Init(context *cli.Context) {
 	muRuntime := cmd.DefaultCmd.Options().Runtime
 
 	// Use default update notifier
-	//notifier := update.NewNotifier(Version)
-	//wrapped := initNotify(notifier, initServices)
+	// notifier := update.NewScheduler(Version)
+	// wrapped := initNotify(notifier, initServices)
 
 	// specify with a notifier that fires
 	// individual events for each service
 	options := []gorun.Option{
-		//	gorun.WithNotifier(wrapped),
+		// gorun.WithScheduler(wrapped),
 		gorun.WithType("runtime"),
 	}
 	(*muRuntime).Init(options...)
@@ -152,26 +164,31 @@ func Init(context *cli.Context) {
 }
 
 // Run runs the entire platform
-func Run(context *cli.Context) {
+func Run(context *cli.Context) error {
 	log.Name("micro")
 
-	if len(context.Args()) > 0 {
+	if context.Args().Len() > 0 {
 		cli.ShowSubcommandHelp(context)
 		os.Exit(1)
 	}
 
 	// get the network flag
-	network := context.GlobalString("network")
-	local := context.GlobalBool("local")
+	local := context.Bool("local")
+	peer := context.Bool("peer")
 
 	// pass through the environment
 	// TODO: perhaps don't do this
 	env := os.Environ()
 
-	if network == "local" || local {
-		// no op for now
-		log.Info("Setting local network")
-	} else {
+	// check either the peer or local flags are set
+	// otherwise just return the hel
+	if !peer && !local {
+		cli.ShowSubcommandHelp(context)
+		os.Exit(1)
+	}
+
+	// connect to the network if specified
+	if peer || !local {
 		log.Info("Setting global network")
 
 		if v := os.Getenv("MICRO_NETWORK_NODES"); len(v) == 0 {
@@ -192,9 +209,9 @@ func Run(context *cli.Context) {
 	muRuntime := cmd.DefaultCmd.Options().Runtime
 
 	// Use default update notifier
-	if context.GlobalBool("auto_update") {
+	if context.Bool("auto_update") {
 		options := []gorun.Option{
-			//	gorun.WithNotifier(update.NewNotifier(Version)),
+	//		gorun.WithScheduler(update.NewScheduler(Version)),
 		}
 		(*muRuntime).Init(options...)
 	}
@@ -202,7 +219,7 @@ func Run(context *cli.Context) {
 	for _, service := range services {
 		name := service
 
-		if namespace := context.GlobalString("namespace"); len(namespace) > 0 {
+		if namespace := context.String("namespace"); len(namespace) > 0 {
 			name = fmt.Sprintf("%s.%s", namespace, service)
 		}
 
@@ -219,7 +236,7 @@ func Run(context *cli.Context) {
 		muService := &gorun.Service{Name: name, Version: Version}
 		if err := (*muRuntime).Create(muService, args...); err != nil {
 			log.Errorf("Failed to create runtime enviroment: %v", err)
-			return
+			return err
 		}
 	}
 
@@ -231,6 +248,7 @@ func Run(context *cli.Context) {
 	// start the runtime
 	if err := (*muRuntime).Start(); err != nil {
 		log.Fatal(err)
+		return err
 	}
 
 	log.Info("Service runtime started")
@@ -249,10 +267,12 @@ func Run(context *cli.Context) {
 	// stop all the things
 	if err := (*muRuntime).Stop(); err != nil {
 		log.Fatal(err)
+		return err
 	}
 
 	log.Info("Service runtime shutdown")
 
 	// exit success
 	os.Exit(0)
+	return nil
 }

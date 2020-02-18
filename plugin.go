@@ -6,7 +6,7 @@ import (
 	"time"
 
 	fileadapter "github.com/casbin/casbin/v2/persist/file-adapter"
-	"github.com/micro/go-micro/util/log"
+	"github.com/micro/go-micro/v2/util/log"
 	"github.com/micro-in-cn/x-gateway/api"
 	"github.com/micro-in-cn/x-gateway/plugin/auth"
 	"github.com/micro-in-cn/x-gateway/plugin/metrics"

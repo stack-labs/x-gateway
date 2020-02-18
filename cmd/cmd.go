@@ -3,15 +3,14 @@ package cmd
 import (
 	"fmt"
 
-	ccli "github.com/micro/cli"
-	"github.com/micro/go-micro"
-	"github.com/micro/go-micro/config/cmd"
 	"github.com/micro-in-cn/x-gateway/api"
-	"github.com/micro-in-cn/x-gateway/debug"
 	"github.com/micro-in-cn/x-gateway/internal/platform"
-	"github.com/micro/micro/plugin"
-	"github.com/micro/micro/plugin/build"
 	"github.com/micro-in-cn/x-gateway/web"
+	ccli "github.com/micro/cli/v2"
+	"github.com/micro/go-micro/v2"
+	"github.com/micro/go-micro/v2/config/cmd"
+	"github.com/micro/micro/v2/plugin"
+	"github.com/micro/micro/v2/plugin/build"
 )
 
 //App Info Vars
@@ -35,80 +34,85 @@ func init() {
 
 func setup(app *ccli.App) {
 	app.Flags = append(app.Flags,
-		ccli.BoolFlag{
+		&ccli.BoolFlag{
 			Name:  "local",
-			Usage: "Enable local only development",
+			Usage: "Enable local only development: Defaults to true.",
 		},
-		ccli.BoolFlag{
-			Name:   "enable_acme",
-			Usage:  "Enables ACME support via Let's Encrypt. ACME hosts should also be specified.",
-			EnvVar: "MICRO_ENABLE_ACME",
+		&ccli.BoolFlag{
+			Name:  "peer",
+			Usage: "Peer with the global network to share services",
 		},
-		ccli.StringFlag{
-			Name:   "acme_hosts",
-			Usage:  "Comma separated list of hostnames to manage ACME certs for",
-			EnvVar: "MICRO_ACME_HOSTS",
+		&ccli.BoolFlag{
+			Name:    "enable_acme",
+			Usage:   "Enables ACME support via Let's Encrypt. ACME hosts should also be specified.",
+			EnvVars: []string{"MICRO_ENABLE_ACME"},
 		},
-		ccli.StringFlag{
-			Name:   "acme_provider",
-			Usage:  "The provider that will be used to communicate with Let's Encrypt. Valid options: autocert, certmagic",
-			EnvVar: "MICRO_ACME_PROVIDER",
+		&ccli.StringFlag{
+			Name:    "acme_hosts",
+			Usage:   "Comma separated list of hostnames to manage ACME certs for",
+			EnvVars: []string{"MICRO_ACME_HOSTS"},
 		},
-		ccli.BoolFlag{
-			Name:   "enable_tls",
-			Usage:  "Enable TLS support. Expects cert and key file to be specified",
-			EnvVar: "MICRO_ENABLE_TLS",
+		&ccli.StringFlag{
+			Name:    "acme_provider",
+			Usage:   "The provider that will be used to communicate with Let's Encrypt. Valid options: autocert, certmagic",
+			EnvVars: []string{"MICRO_ACME_PROVIDER"},
 		},
-		ccli.StringFlag{
-			Name:   "tls_cert_file",
-			Usage:  "Path to the TLS Certificate file",
-			EnvVar: "MICRO_TLS_CERT_FILE",
+		&ccli.BoolFlag{
+			Name:    "enable_tls",
+			Usage:   "Enable TLS support. Expects cert and key file to be specified",
+			EnvVars: []string{"MICRO_ENABLE_TLS"},
 		},
-		ccli.StringFlag{
-			Name:   "tls_key_file",
-			Usage:  "Path to the TLS Key file",
-			EnvVar: "MICRO_TLS_KEY_FILE",
+		&ccli.StringFlag{
+			Name:    "tls_cert_file",
+			Usage:   "Path to the TLS Certificate file",
+			EnvVars: []string{"MICRO_TLS_CERT_FILE"},
 		},
-		ccli.StringFlag{
-			Name:   "tls_client_ca_file",
-			Usage:  "Path to the TLS CA file to verify clients against",
-			EnvVar: "MICRO_TLS_CLIENT_CA_FILE",
+		&ccli.StringFlag{
+			Name:    "tls_key_file",
+			Usage:   "Path to the TLS Key file",
+			EnvVars: []string{"MICRO_TLS_KEY_FILE"},
 		},
-		ccli.StringFlag{
-			Name:   "api_address",
-			Usage:  "Set the api address e.g 0.0.0.0:8080",
-			EnvVar: "MICRO_API_ADDRESS",
+		&ccli.StringFlag{
+			Name:    "tls_client_ca_file",
+			Usage:   "Path to the TLS CA file to verify clients against",
+			EnvVars: []string{"MICRO_TLS_CLIENT_CA_FILE"},
 		},
-		ccli.StringFlag{
-			Name:   "gateway_address",
-			Usage:  "Set the micro default gateway address e.g. :9094",
-			EnvVar: "MICRO_GATEWAY_ADDRESS",
+		&ccli.StringFlag{
+			Name:    "api_address",
+			Usage:   "Set the api address e.g 0.0.0.0:8080",
+			EnvVars: []string{"MICRO_API_ADDRESS"},
 		},
-		ccli.StringFlag{
-			Name:   "api_handler",
-			Usage:  "Specify the request handler to be used for mapping HTTP requests to services; {api, proxy, rpc}",
-			EnvVar: "MICRO_API_HANDLER",
+		&ccli.StringFlag{
+			Name:    "gateway_address",
+			Usage:   "Set the micro default gateway address e.g. :9094",
+			EnvVars: []string{"MICRO_GATEWAY_ADDRESS"},
 		},
-		ccli.StringFlag{
-			Name:   "api_namespace",
-			Usage:  "Set the namespace used by the API e.g. com.example.api",
-			EnvVar: "MICRO_API_NAMESPACE",
+		&ccli.StringFlag{
+			Name:    "api_handler",
+			Usage:   "Specify the request handler to be used for mapping HTTP requests to services; {api, proxy, rpc}",
+			EnvVars: []string{"MICRO_API_HANDLER"},
 		},
-		ccli.BoolFlag{
-			Name:   "auto_update",
-			Usage:  "Enable automatic updates",
-			EnvVar: "MICRO_AUTO_UPDATE",
+		&ccli.StringFlag{
+			Name:    "api_namespace",
+			Usage:   "Set the namespace used by the API e.g. com.example.api",
+			EnvVars: []string{"MICRO_API_NAMESPACE"},
 		},
-		ccli.BoolTFlag{
-			Name:   "report_usage",
-			Usage:  "Report usage statistics",
-			EnvVar: "MICRO_REPORT_USAGE",
+		&ccli.BoolFlag{
+			Name:    "auto_update",
+			Usage:   "Enable automatic updates",
+			EnvVars: []string{"MICRO_AUTO_UPDATE"},
 		},
-		ccli.StringFlag{
-			Name:   "namespace",
-			Usage:  "Set the micro service namespace",
-			EnvVar: "MICRO_NAMESPACE",
-			Value:  "go.micro",
+		&ccli.BoolFlag{
+			Name:    "report_usage",
+			Usage:   "Report usage statistics",
+			EnvVars: []string{"MICRO_REPORT_USAGE"},
+			Value:   true,
+		},
+		&ccli.StringFlag{
+			Name:    "namespace",
+			Usage:   "Set the micro service namespace",
+			EnvVars: []string{"MICRO_NAMESPACE"},
+			Value:   "go.micro",
 		},
 	)
 
@@ -182,16 +186,16 @@ func Init(options ...micro.Option) {
 func Setup(app *ccli.App, options ...micro.Option) {
 	// Add the various commands
 	app.Commands = append(app.Commands, api.Commands(options...)...)
-	app.Commands = append(app.Commands, debug.Commands(options...)...)
 	app.Commands = append(app.Commands, build.Commands()...)
 	app.Commands = append(app.Commands, web.Commands(options...)...)
 
 	// add the init command for our internal operator
-	app.Commands = append(app.Commands, ccli.Command{
+	app.Commands = append(app.Commands, &ccli.Command{
 		Name:  "init",
 		Usage: "Run the micro operator",
-		Action: func(c *ccli.Context) {
+		Action: func(c *ccli.Context) error {
 			platform.Init(c)
+			return nil
 		},
 		Flags: []ccli.Flag{},
 	})

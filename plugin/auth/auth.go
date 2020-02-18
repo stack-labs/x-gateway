@@ -10,7 +10,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/dgrijalva/jwt-go/request"
 	"github.com/dgrijalva/jwt-go/test"
-	"github.com/micro/cli/v2"
+	cli "github.com/micro/cli/v2"
 	"github.com/micro/go-micro/v2/errors"
 	"github.com/micro/go-micro/v2/util/log"
 	"github.com/micro/micro/v2/plugin"
