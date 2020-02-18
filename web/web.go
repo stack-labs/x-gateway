@@ -16,6 +16,9 @@ import (
 
 	"github.com/go-acme/lego/v3/providers/dns/cloudflare"
 	"github.com/gorilla/mux"
+	"github.com/micro-in-cn/x-gateway/internal/handler"
+	"github.com/micro-in-cn/x-gateway/internal/helper"
+	"github.com/micro-in-cn/x-gateway/internal/stats"
 	"github.com/micro/cli/v2"
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/api/server"
@@ -30,13 +33,11 @@ import (
 	cfstore "github.com/micro/go-micro/v2/store/cloudflare"
 	"github.com/micro/go-micro/v2/sync/lock/memory"
 	"github.com/micro/go-micro/v2/util/log"
-	"github.com/micro-in-cn/x-gateway/internal/handler"
-	"github.com/micro-in-cn/x-gateway/internal/helper"
-	"github.com/micro-in-cn/x-gateway/internal/stats"
 	"github.com/micro/micro/v2/plugin"
 	"github.com/serenize/snaker"
 )
 
+//Metadata of web
 var (
 	re = regexp.MustCompile("^[a-zA-Z0-9]+([a-zA-Z0-9-]*[a-zA-Z0-9]*)?$")
 	// Default server name
@@ -557,6 +558,7 @@ func run(ctx *cli.Context, srvOpts ...micro.Option) {
 	}
 }
 
+//Commands of web
 func Commands(options ...micro.Option) []*cli.Command {
 	command := &cli.Command{
 		Name:  "web",

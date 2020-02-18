@@ -10,6 +10,7 @@ import (
 	"github.com/micro/go-micro/v2/config/cmd"
 	gorun "github.com/micro/go-micro/v2/runtime"
 	"github.com/micro/go-micro/v2/util/log"
+
 	// include usage
 	//"github.com/micro-in-cn/x-gateway/internal/update"
 	//_ "github.com/micro-in-cn/x-gateway/internal/usage"
@@ -20,6 +21,7 @@ import (
 	ckStore "github.com/micro/go-micro/v2/store/cockroach"
 )
 
+// Metada of app
 var (
 	// Date of the build
 	// TODO: move elsewhere
@@ -36,7 +38,7 @@ var (
 		// runtime services
 		"debug", // :????
 		"api",   // :8080
-		"auth",     // :8010
+		"auth",  // :8010
 		"init",  // no port, manage self
 	}
 
@@ -211,7 +213,7 @@ func Run(context *cli.Context) error {
 	// Use default update notifier
 	if context.Bool("auto_update") {
 		options := []gorun.Option{
-	//		gorun.WithScheduler(update.NewScheduler(Version)),
+			//		gorun.WithScheduler(update.NewScheduler(Version)),
 		}
 		(*muRuntime).Init(options...)
 	}

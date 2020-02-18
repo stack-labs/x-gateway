@@ -150,7 +150,7 @@ func parseOne(s string, appFlags []ccli.Flag) (bool, error) {
 	//check the next value
 	subCmdFlags = append(subCmdFlags, s) //add to flag set
 	if !hasValue {
-		errorLastMainFlag = ErrParsedNoSubCmdFlagValue
+		errorLastSubCmdFlag = ErrParsedNoSubCmdFlagValue
 		return true, ErrParsedNoSubCmdFlagValue
 	}
 	//find a value

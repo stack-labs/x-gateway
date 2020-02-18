@@ -10,6 +10,7 @@ import (
 	"strings"
 )
 
+//Result for client
 type Result struct {
 	Count map[string]int64 `json:"count"`
 }
@@ -136,7 +137,7 @@ func main() {
 
 	fmt.Println("\nMonthly requests:")
 	var keys []string
-	for k, _ := range monthly {
+	for k := range monthly {
 		keys = append(keys, k)
 	}
 

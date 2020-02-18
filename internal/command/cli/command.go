@@ -171,6 +171,7 @@ func callContext(c *cli.Context) context.Context {
 	return metadata.NewContext(context.Background(), callMD)
 }
 
+//RegisterService for cli
 func RegisterService(c *cli.Context, args []string) ([]byte, error) {
 	if len(args) == 0 {
 		return nil, errors.New("require service definition")
@@ -194,6 +195,7 @@ func RegisterService(c *cli.Context, args []string) ([]byte, error) {
 	return []byte("ok"), nil
 }
 
+//DeregisterService of cli
 func DeregisterService(c *cli.Context, args []string) ([]byte, error) {
 	if len(args) == 0 {
 		return nil, errors.New("require service definition")
@@ -217,6 +219,7 @@ func DeregisterService(c *cli.Context, args []string) ([]byte, error) {
 	return []byte("ok"), nil
 }
 
+//GetService of cli
 func GetService(c *cli.Context, args []string) ([]byte, error) {
 	if len(args) == 0 {
 		return nil, errors.New("service required")
@@ -290,6 +293,7 @@ func GetService(c *cli.Context, args []string) ([]byte, error) {
 	return []byte(strings.Join(output, "\n")), nil
 }
 
+//NetworkConnect of cli
 func NetworkConnect(c *cli.Context, args []string) ([]byte, error) {
 	if len(args) == 0 {
 		return nil, nil
@@ -317,6 +321,7 @@ func NetworkConnect(c *cli.Context, args []string) ([]byte, error) {
 	return b, nil
 }
 
+//NetworkConnections of web
 func NetworkConnections(c *cli.Context) ([]byte, error) {
 	cli := *cmd.DefaultOptions().Client
 
@@ -363,6 +368,7 @@ func NetworkConnections(c *cli.Context) ([]byte, error) {
 	return b.Bytes(), nil
 }
 
+//NetworkGraph of web
 func NetworkGraph(c *cli.Context) ([]byte, error) {
 	cli := *cmd.DefaultOptions().Client
 
@@ -378,6 +384,7 @@ func NetworkGraph(c *cli.Context) ([]byte, error) {
 	return b, nil
 }
 
+//NetworkNodes of web
 func NetworkNodes(c *cli.Context) ([]byte, error) {
 	cli := *cmd.DefaultOptions().Client
 
@@ -420,6 +427,7 @@ func NetworkNodes(c *cli.Context) ([]byte, error) {
 	return b.Bytes(), nil
 }
 
+//NetworkRoutes of web
 func NetworkRoutes(c *cli.Context) ([]byte, error) {
 	cli := (*cmd.DefaultOptions().Client)
 
@@ -504,6 +512,7 @@ func NetworkRoutes(c *cli.Context) ([]byte, error) {
 	return b.Bytes(), nil
 }
 
+//NetworkServices of web
 func NetworkServices(c *cli.Context) ([]byte, error) {
 	cli := (*cmd.DefaultOptions().Client)
 
@@ -532,6 +541,7 @@ func NetworkServices(c *cli.Context) ([]byte, error) {
 	return []byte(strings.Join(services, "\n")), nil
 }
 
+//NetworkDNSAdvertise of web
 func NetworkDNSAdvertise(c *cli.Context) ([]byte, error) {
 	err := networkDNSHelper("Dns.Advertise", c.String("address"), c.String("domain"), c.String("token"))
 	if err != nil {
@@ -540,6 +550,7 @@ func NetworkDNSAdvertise(c *cli.Context) ([]byte, error) {
 	return []byte("Registered " + c.String("domain") + ": " + c.String("address")), nil
 }
 
+//NetworkDNSRemove of web
 func NetworkDNSRemove(c *cli.Context) ([]byte, error) {
 	err := networkDNSHelper("Dns.Remove", c.String("address"), c.String("domain"), c.String("token"))
 	if err != nil {
@@ -548,6 +559,7 @@ func NetworkDNSRemove(c *cli.Context) ([]byte, error) {
 	return []byte("Removed " + c.String("domain") + ": " + c.String("address")), nil
 }
 
+//NetworkDNSResolve of web
 func NetworkDNSResolve(c *cli.Context) ([]byte, error) {
 	request := make(map[string]interface{})
 	request["name"] = c.String("domain")
@@ -622,6 +634,7 @@ func networkDNSHelper(action, address, domain, token string) error {
 	return nil
 }
 
+//ListServices of registry
 func ListServices(c *cli.Context) ([]byte, error) {
 	var rsp []*registry.Service
 	var err error
@@ -642,6 +655,7 @@ func ListServices(c *cli.Context) ([]byte, error) {
 	return []byte(strings.Join(services, "\n")), nil
 }
 
+//Publish of event
 func Publish(c *cli.Context, args []string) error {
 	if len(args) < 2 {
 		return errors.New("require topic and message e.g micro publish event '{\"hello\": \"world\"}'")
@@ -670,6 +684,7 @@ func Publish(c *cli.Context, args []string) error {
 	return cl.Publish(ctx, m)
 }
 
+//CallService in registry
 func CallService(c *cli.Context, args []string) ([]byte, error) {
 	if len(args) < 2 {
 		return nil, errors.New(`require service and endpoint e.g micro call greeeter Say.Hello '{"name": "john"}'`)
