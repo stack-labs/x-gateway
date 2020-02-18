@@ -12,7 +12,6 @@ import (
 	"github.com/dgrijalva/jwt-go/test"
 	"github.com/micro/cli/v2"
 	"github.com/micro/go-micro/v2/errors"
-	"github.com/micro/go-micro/v2/util/log"
 	"github.com/micro/micro/v2/plugin"
 )
 
@@ -26,17 +25,17 @@ func init() {
 	watchers = make(map[string]persist.Watcher)
 }
 
-//RegisterAdapter of auth
+// RegisterAdapter of auth
 func RegisterAdapter(key string, a persist.Adapter) {
 	adapters[key] = a
 }
 
-//RegisterWatcher of auth
+// RegisterWatcher of auth
 func RegisterWatcher(key string, w persist.Watcher) {
 	watchers[key] = w
 }
 
-//Auth for micro
+// Auth for micro
 type Auth struct {
 	options Options
 
@@ -76,7 +75,7 @@ func (a *Auth) handler(h http.Handler) http.Handler {
 			r,
 			request.AuthorizationHeaderExtractor,
 			a.keyFunc,
-			request.WithClaims(&jwt.StandardClaims{}),
+			request.WithClaims(a.options.claims),
 		)
 
 		if err != nil || token == nil {
@@ -90,25 +89,23 @@ func (a *Auth) handler(h http.Handler) http.Handler {
 		}
 
 		// 访问控制
-		claims := token.Claims.(*jwt.StandardClaims)
-		if allowed, err := a.enforcer.Enforce(claims.Id, path, method); err != nil {
+		if allowed, err := a.enforcer.Enforce(a.options.claimsSubjectFunc(token.Claims), path, method); err != nil {
 			a.options.responseHandler(w, r, errors.InternalServerError(id, err.Error()))
 			return
 		} else if !allowed {
-			log.Infof("Claims ID: %v, path: %v, method: %v", claims.Id, path, method)
 			a.options.responseHandler(w, r, errors.Forbidden(id, "Casbin access control not allowed"))
 			return
 		}
 
-		// 将用户ID加入Header
-		r.Header.Set("UserId", claims.Id)
+		// 添加Header
+		a.options.headerFunc(r, token.Claims)
 
 		// otherwise serve everything
 		h.ServeHTTP(w, r)
 	})
 }
 
-//NewPlugin for auth
+// NewPlugin for auth
 func NewPlugin(opts ...Option) plugin.Plugin {
 	options := newOptions(opts...)
 
